@@ -28,10 +28,10 @@ hist(totStepDay$steps,
      main = "Histogram of Total Steps Per Day",
      xlab = "Total steps per day")
 
-#(3) Mean number of steps per day
+#(3) Mean total number of steps per day
 mean(totStepDay$steps)
 
-#(3) Median number of steps per day
+#(3) Median total number of steps per day
 median(totStepDay$steps)
 ```
 

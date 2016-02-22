@@ -29,7 +29,7 @@ hist(totStepDay$steps,
 ![](PA1_template_files/figure-html/total_daily_steps-1.png)
 
 ```r
-#(3) Mean number of steps per day
+#(3) Mean total number of steps per day
 mean(totStepDay$steps)
 ```
 
@@ -38,7 +38,7 @@ mean(totStepDay$steps)
 ```
 
 ```r
-#(3) Median number of steps per day
+#(3) Median total number of steps per day
 median(totStepDay$steps)
 ```
 
