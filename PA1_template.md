@@ -1,16 +1,12 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
 With the data stored as `activity.csv` in the working directory, it is loaded into R.
 
-```{r load_proc, echo = TRUE}
+
+```r
 #(1) Loading the data
 actData <- read.csv("activity.csv", colClasses = c("numeric", "Date", "integer"))
 ```
@@ -19,7 +15,8 @@ actData <- read.csv("activity.csv", colClasses = c("numeric", "Date", "integer")
 
 The total steps per day for each date are calculated, and plotted into a histogram to show the frequency of the totals. The mean and median total steps per day values are calculated.
 
-```{r total_daily_steps, echo = TRUE}
+
+```r
 #(1) Calculating the total number of steps taken per day. Aggregate, by default, ignores NA values.
 totStepDay <- aggregate(steps ~ date, data = actData, sum, na.rm = TRUE)
 
@@ -27,19 +24,34 @@ totStepDay <- aggregate(steps ~ date, data = actData, sum, na.rm = TRUE)
 hist(totStepDay$steps,
      main = "Histogram of Total Steps Per Day",
      xlab = "Total steps per day")
+```
 
+![](PA1_template_files/figure-html/total_daily_steps-1.png)
+
+```r
 #(3) Mean number of steps per day
 mean(totStepDay$steps)
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 #(3) Median number of steps per day
 median(totStepDay$steps)
+```
+
+```
+## [1] 10765
 ```
 
 ## What is the average daily activity pattern?
 
 The average number of steps taken for each 5-minute interval across all days is calculated. It is then plotted against the 5-minute interval to generate a time series plot. The interval at which the average number of steps was at a maximum is then calculated.
 
-```{r mean_steps_per_interval, echo = TRUE}
+
+```r
 #Calculating average number of steps taken during each interval across all days
 meanStepInt <- aggregate(steps ~ interval, data = actData, mean, na.rm = TRUE)
 
@@ -48,9 +60,17 @@ with(meanStepInt, plot(interval, steps, type = "l",
                        main = "Average Number of Steps per Interval",
                        xlab = "Interval",
                        ylab = "Average number of steps"))
+```
 
+![](PA1_template_files/figure-html/mean_steps_per_interval-1.png)
+
+```r
 #(2) Interval with the maximum number of steps, on average
 meanStepInt[which.max(meanStepInt$steps),1]
+```
+
+```
+## [1] 835
 ```
 
 
@@ -58,10 +78,17 @@ meanStepInt[which.max(meanStepInt$steps),1]
 
 The number of rows with missing values is calculated. A copy of the dataset is made, but with the missing values replaced by the average number of steps for the respective 5-minute interval. A histogram of the new total number of steps per day is then generated, along with the new mean and median.
 
-```{r missing_values, echo = TRUE}
+
+```r
 #(1) Number of rows with missing data
 sum(!complete.cases(actData))
+```
 
+```
+## [1] 2304
+```
+
+```r
 #Generating copy of activity data
 actDataComp <- actData
 
@@ -79,12 +106,26 @@ totStepDayComp <- aggregate(steps ~ date, data = actDataComp, sum)
 hist(totStepDayComp$steps,
      main = "Histogram of Total Steps Per Day",
      xlab = "Total steps per day")
+```
 
+![](PA1_template_files/figure-html/missing_values-1.png)
+
+```r
 #(4) Mean number of steps per day
 mean(totStepDayComp$steps)
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 #(4) Mean number of steps per day
 median(totStepDayComp$steps)
+```
+
+```
+## [1] 10766.19
 ```
 
 As shown, replacing missing data with the method specified above has only had a small effect on the median, but has not affected the mean.
@@ -94,7 +135,8 @@ As shown, replacing missing data with the method specified above has only had a 
 To identify if there are differences in activity patterns between weekdays and weekends, a new factor variable specifiying whether a particular day is a weekend or a weekday is added to the dataset. Time series plots of the 5-minute interval and average number of steps across weekdays and weekends are then generated.
 
 
-```{r weekdays, echo = TRUE}
+
+```r
 #(1) Generating a new factor variable
 actDataComp$day <- factor((weekdays(actDataComp$date) %in% c("Saturday", "Sunday")), 
                               levels=c(TRUE, FALSE), 
@@ -113,3 +155,5 @@ xyplot(steps ~ interval | day, meanStepIntWkday, type = "l", layout = c(1,2),
        xlab = "Interval", 
        ylab = "Number of steps")
 ```
+
+![](PA1_template_files/figure-html/weekdays-1.png)
